@@ -9,8 +9,8 @@ class BinaryImage:
         returns a histogram as a list"""
 
         hist = [0]*256
-        for x in image.shape[0]:
-            for y in image.shape[1]:
+        for x in range(image.shape[0]):
+            for y in range(image.shape[1]):
                 hist[image[x, y]] += 1
 
         return hist
