@@ -60,8 +60,8 @@ class BinaryImage:
         returns: a binary image"""
 
         bin_img = image.copy()
-        for y in bin_img.shape[0]:
-            for x in bin_img.shape[1]:
+        for y in range(bin_img.shape[0]):
+            for x in range(bin_img.shape[1]):
                 if bin_img[y, x] < threshold:
                     bin_img[y, x] = 0
                 else:
