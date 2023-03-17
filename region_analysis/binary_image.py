@@ -32,9 +32,13 @@ class BinaryImage:
         mean_2 = 0
         old_mean_1 = 0
         old_mean_2 = 0
-        while abs(old_mean_1 - mean_1) > 2 and abs(old_mean_2 - mean_2) > 2:
+        while abs(old_mean_1 - mean_1) > 1 and abs(old_mean_2 - mean_2) > 1:
             old_mean_1 = mean_1
             old_mean_2 = mean_2
+            mean_1 = 0
+            mean_2 = 0
+            total_1 = 0
+            total_2 = 0
             for x in hist:
                 if x < threshold:
                     total_1 += hist[x]
@@ -56,5 +60,10 @@ class BinaryImage:
         returns: a binary image"""
 
         bin_img = image.copy()
-
+        for y in bin_img.shape[0]:
+            for x in bin_img.shape[1]:
+                if bin_img[y, x] < threshold:
+                    bin_img[y, x] = 0
+                else:
+                    bin_img[y, x] = 255
         return bin_img
