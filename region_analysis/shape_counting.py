@@ -10,6 +10,17 @@ class ShapeCounting:
         """
 
         regions = dict()
+        region_label = 0
+        for y in range(image.shape[0]):
+            for x in range(image.shape[1]):
+                if image[y, x] == 255:
+                    if image[y-1, x] == 255:
+                        regions[(y, x)] = regions[(y-1, x)]
+                    elif image[y, x-1] == 255:
+                        regions[(y, x)] = regions[(y, x-1)]
+                    else:
+                        regions[(y, x)] = region_label
+                        region_label += 1
 
         return regions
 
@@ -48,4 +59,3 @@ class ShapeCounting:
         returns: image marked with center and shape_type"""
 
         return image
-
