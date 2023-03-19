@@ -21,8 +21,13 @@ class ShapeCounting:
                     else:
                         regions[(y, x)] = region_label
                         region_label += 1
-
-        return regions
+        # Instead of making the dict key a coordinate, make the region number the key with the values being all coordinates
+        sorted_regions = {}
+        for key, value in regions.items():
+            if value not in sorted_regions:
+                sorted_regions[value] = []
+            sorted_regions[value].append(key)
+        return sorted_regions
 
     def identify_shapes(self, region):
         """Compute shape features area and centroid, and shape
@@ -38,7 +43,42 @@ class ShapeCounting:
         # Example: Region: 871, centroid: (969.11, 51.11), area: 707, shape: c
 
         shapes = dict()
-
+        region_number = 0
+        pixel_count = 0
+        smallest_x = 0
+        biggest_x = 0
+        smallest_y = 0
+        biggest_y = 0
+        shape = 'c'
+        for key, value in region.items():
+            pixel_count += 1
+            region_number = key
+            for item in value:
+                if (smallest_x > item[1]):
+                    smallest_x = item[1]
+                if (biggest_x < item[1]):
+                    biggest_x = item[1]
+                if (smallest_y > item[0]):
+                    smallest_y = item[0]
+                if (biggest_y < item[0]):
+                    biggest_y = item[0]
+        if pixel_count > 10:
+            if (biggest_x - smallest_x) == (biggest_y - smallest_y):
+                shape = 'c'
+                for key, value in region.items():
+                    for item in value:
+                        if (biggest_y, biggest_x) == item:
+                            shape = 's'
+            else:
+                shape = 'e'
+                for key, value in region.items():
+                    for item in value:
+                        if (biggest_y, biggest_x) == item:
+                            shape = 'r'
+            centroid = ((biggest_y+smallest_y)/2, (biggest_x+smallest_x)/2)
+            shapes = {"Region": region_number,
+                      "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
+            print(shapes.items())
         return shapes
 
     def count_shapes(self, shapes_data):
