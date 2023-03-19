@@ -42,44 +42,42 @@ class ShapeCounting:
         # Region: <region_no>, centroid: <centroid>, area: <shape area>, shape: <shape type>
         # Example: Region: 871, centroid: (969.11, 51.11), area: 707, shape: c
 
-        shapes = dict()
-        region_number = 0
-        pixel_count = 0
-        smallest_x = 0
-        biggest_x = 0
-        smallest_y = 0
-        biggest_y = 0
-        shape = 'c'
-        for key, value in region.items():
-            pixel_count += 1
-            region_number = key
-            for item in value:
-                if (smallest_x > item[1]):
-                    smallest_x = item[1]
-                if (biggest_x < item[1]):
-                    biggest_x = item[1]
-                if (smallest_y > item[0]):
-                    smallest_y = item[0]
-                if (biggest_y < item[0]):
-                    biggest_y = item[0]
-        if pixel_count > 10:
-            if (biggest_x - smallest_x) == (biggest_y - smallest_y):
+        final_dict = dict()
+        for x in region:
+            if len(region[x]) > 10:
+                shapes = dict()
+                pixel_count = 0
+                smallest_x = 0
+                biggest_x = 0
+                smallest_y = 0
+                biggest_y = 0
                 shape = 'c'
-                for key, value in region.items():
-                    for item in value:
-                        if (biggest_y, biggest_x) == item:
+                for values in region[x]:
+                    pixel_count += 1
+                    if (smallest_x > values[1]):
+                        smallest_x = values[1]
+                    if (biggest_x < values[1]):
+                        biggest_x = values[1]
+                    if (smallest_y > values[0]):
+                        smallest_y = values[0]
+                    if (biggest_y < values[0]):
+                        biggest_y = values[0]
+                if (biggest_x - smallest_x) == (biggest_y - smallest_y):
+                    shape = 'c'
+                    for values in region[x]:
+                        if (biggest_y, biggest_x) == values:
                             shape = 's'
-            else:
-                shape = 'e'
-                for key, value in region.items():
-                    for item in value:
-                        if (biggest_y, biggest_x) == item:
+                else:
+                    shape = 'e'
+                    for values in region[x]:
+                        if (biggest_y, biggest_x) == values:
                             shape = 'r'
-            centroid = ((biggest_y+smallest_y)/2, (biggest_x+smallest_x)/2)
-            shapes = {"Region": region_number,
-                      "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
-            print(shapes.items())
-        return shapes
+                centroid = ((biggest_y+smallest_y)/2, (biggest_x+smallest_x)/2)
+                shapes = {"Region": x,
+                          "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
+                print(shapes.items())
+                final_dict[x] = shapes
+        return final_dict
 
     def count_shapes(self, shapes_data):
         """Compute the count of shapes using the shapes data returned from identify shapes function
