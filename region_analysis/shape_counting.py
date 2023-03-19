@@ -115,6 +115,8 @@ class ShapeCounting:
         returns: image marked with center and shape_type"""
         labeled_image = image
         for x in shapes_data:
-            dip.putText(labeled_image, shapes_data[x]["Shape"], shapes_data[x]
-                        ["Centroid (in terms of (y,x))"], dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
+            y = round(shapes_data[x]["Centroid (in terms of (y,x))"][0])
+            x = round(shapes_data[x]["Centroid (in terms of (y,x))"][1])
+            dip.putText(labeled_image, shapes_data[x]["Shape"], (
+                y, x), dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
         return labeled_image
