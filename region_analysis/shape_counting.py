@@ -1,3 +1,7 @@
+import dip
+from dip import *
+
+
 class ShapeCounting:
     def __init__(self):
         pass
@@ -86,7 +90,21 @@ class ShapeCounting:
            returns: a dictionary with count of each shape
            Example return value: {'circles': 21, 'ellipses': 25, 'rectangles': 31, 'squares': 23}
            """
-        return {"circles": 0, "ellipses": 0, "rectangles": 0, "squares": 0}
+        circles = 0
+        ellipses = 0
+        rectangles = 0
+        squares = 0
+        for x in shapes_data:
+            if shapes_data[x]["Shape"] == 'c':
+                circles += 1
+            if shapes_data[x]["Shape"] == 'e':
+                ellipses += 1
+            if shapes_data[x]["Shape"] == 'r':
+                rectangles += 1
+            if shapes_data[x]["Shape"] == 's':
+                squares += 1
+
+        return {"circles": circles, "ellipses": ellipses, "rectangles": rectangles, "squares": squares}
 
     def mark_image_regions(self, image, shapes_data):
         """Creates a new image with computed stats for each shape
@@ -95,5 +113,8 @@ class ShapeCounting:
         image: binary image
         shapes_data: a list/dict of regions, with centroid, shape, and area for each shape
         returns: image marked with center and shape_type"""
-
-        return image
+        labeled_image = image
+        for x in shapes_data:
+            dip.putText(labeled_image, shapes_data[x]["Shape"], shapes_data[x]
+                        ["Centroid (in terms of (y,x))"], dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
+        return labeled_image
