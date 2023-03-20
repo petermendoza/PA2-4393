@@ -66,7 +66,6 @@ class ShapeCounting:
             if len(region[x]) > 10:
                 shapes = dict()
                 pixel_count = len(region[x])
-                shape = 'c'
                 y_values = [p[0] for p in region[x]]
                 x_values = [p[1] for p in region[x]]
                 biggest_y = max(y_values)
