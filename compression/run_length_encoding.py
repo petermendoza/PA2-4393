@@ -21,7 +21,7 @@ class Rle:
                     value += 1
                 else:
                     rle_code.append(value)
-                    value = 0
+                    value = 1
                     current_color = binary_image[y, x]
 
         return rle_code  # replace zeros with rle_code
