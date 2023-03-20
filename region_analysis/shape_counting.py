@@ -31,6 +31,7 @@ class ShapeCounting:
             if value not in sorted_regions:
                 sorted_regions[value] = []
             sorted_regions[value].append(key)
+        print(len(sorted_regions))
         return sorted_regions
 
     def identify_shapes(self, region):
@@ -47,26 +48,16 @@ class ShapeCounting:
         # Example: Region: 871, centroid: (969.11, 51.11), area: 707, shape: c
 
         final_dict = dict()
-        for x in region:
+        for x in region.keys():
             if len(region[x]) > 10:
                 shapes = dict()
-                pixel_count = 0
-                smallest_x = 0
-                biggest_x = 0
-                smallest_y = 0
-                biggest_y = 0
+                pixel_count = len(region[x])
                 shape = 'c'
-                for values in region[x]:
-                    pixel_count += 1
-                    if (smallest_x > values[1]):
-                        smallest_x = values[1]
-                    if (biggest_x < values[1]):
-                        biggest_x = values[1]
-                    if (smallest_y > values[0]):
-                        smallest_y = values[0]
-                    if (biggest_y < values[0]):
-                        biggest_y = values[0]
-                if (biggest_x - smallest_x) == (biggest_y - smallest_y):
+                smallest_x = min(p[1] for p in region[x])
+                biggest_x = max(p[1] for p in region[x])
+                smallest_y = min(p[0] for p in region[x])
+                biggest_y = max(p[0] for p in region[x])
+                if abs((biggest_x - smallest_x) - (biggest_y - smallest_y)) < 3:
                     shape = 'c'
                     for values in region[x]:
                         if (biggest_y, biggest_x) == values:
@@ -81,6 +72,7 @@ class ShapeCounting:
                           "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
                 print(shapes.items())
                 final_dict[x] = shapes
+                
         return final_dict
 
     def count_shapes(self, shapes_data):
