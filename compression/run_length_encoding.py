@@ -49,6 +49,6 @@ class Rle:
                     else:
                         current_color = 0
                     current_index += 1
-                    list_tracker[y, x] = current_color
+                    decoded_image[y, x] = current_color
                     list_tracker[current_index] -= 1
         return decoded_image  # replace zeros with image reconstructed from rle_Code
