@@ -112,5 +112,5 @@ class ShapeCounting:
             y_coord = round(shapes_data[x]["Centroid (in terms of (y,x))"][0])
             x_coord = round(shapes_data[x]["Centroid (in terms of (y,x))"][1])
             dip.putText(labeled_image, shapes_data[x]["Shape"], (
-                x_coord, y_coord), dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
+                int(x_coord), int(y_coord)), dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
         return labeled_image
