@@ -24,6 +24,7 @@ class Rle:
                     value = 1
                     current_color = binary_image[y, x]
 
+        rle_code.append(value)
         return rle_code  # replace zeros with rle_code
 
     def decode_image(self, rle_code, height, width):
@@ -43,7 +44,7 @@ class Rle:
                 if list_tracker[current_index] != 0:
                     decoded_image[y, x] = current_color
                     list_tracker[current_index] -= 1
-                if list_tracker[current_index] == 0:
+                else:
                     if current_color == 0:
                         current_color = 255
                     else:
