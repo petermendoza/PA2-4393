@@ -38,18 +38,14 @@ class Rle:
         decoded_image = zeros((height, width), uint8)
         current_index = 0
         current_color = 0
-        list_tracker = rle_code
         for y in range(decoded_image.shape[0]):
             for x in range(decoded_image.shape[1]):
-                if list_tracker[current_index] != 0:
+                if rle_code[current_index] != 0:
                     decoded_image[y, x] = current_color
-                    list_tracker[current_index] -= 1
+                    rle_code[current_index] -= 1
                 else:
-                    if current_color == 0:
-                        current_color = 255
-                    else:
-                        current_color = 0
+                    current_color = 255 - current_color
                     current_index += 1
                     decoded_image[y, x] = current_color
-                    list_tracker[current_index] -= 1
-        return decoded_image  # replace zeros with image reconstructed from rle_Code
+                    rle_code[current_index] -= 1
+        return decoded_image
