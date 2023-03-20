@@ -18,10 +18,14 @@ class ShapeCounting:
         for y in range(image.shape[0]):
             for x in range(image.shape[1]):
                 if image[y, x] == 255:
-                    if image[y-1, x] == 255:
+                    if image[y-1, x] == 255 and image[y, x-1] == 0:
                         regions[(y, x)] = regions[(y-1, x)]
-                    elif image[y, x-1] == 255:
+                    elif image[y, x-1] == 255 and image[y-1, x] == 0:
                         regions[(y, x)] = regions[(y, x-1)]
+                    elif image[y, x-1] == 255 and image[y, x] == 255:
+                        if regions[(y-1, x)] != regions[(y, x-1)]:
+                            regions[(y, x-1)] = regions[(y-1, x)]
+                            regions[(y, x)] = regions[(y, x-1)]
                     else:
                         regions[(y, x)] = region_label
                         region_label += 1
@@ -58,6 +62,7 @@ class ShapeCounting:
                 smallest_y = min(y_values)
                 biggest_x = max(x_values)
                 smallest_x = min(x_values)
+                # Checking if length and width are around the same pixel length
                 if abs((biggest_x - smallest_x) - (biggest_y - smallest_y)) < 3:
                     shape = 'c'
                     for values in region[x]:
