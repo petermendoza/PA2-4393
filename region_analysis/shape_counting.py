@@ -53,10 +53,12 @@ class ShapeCounting:
                 shapes = dict()
                 pixel_count = len(region[x])
                 shape = 'c'
-                smallest_x = min(p[1] for p in region[x])
-                biggest_x = max(p[1] for p in region[x])
-                smallest_y = min(p[0] for p in region[x])
-                biggest_y = max(p[0] for p in region[x])
+                y_values = [p[0] for p in region[x]]
+                x_values = [p[1] for p in region[x]]
+                biggest_y = max(y_values)
+                smallest_y = min(y_values)
+                biggest_x = max(x_values)
+                smallest_x = min(x_values)
                 if abs((biggest_x - smallest_x) - (biggest_y - smallest_y)) < 3:
                     shape = 'c'
                     for values in region[x]:
@@ -72,7 +74,7 @@ class ShapeCounting:
                           "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
                 print(shapes.items())
                 final_dict[x] = shapes
-                
+
         return final_dict
 
     def count_shapes(self, shapes_data):
