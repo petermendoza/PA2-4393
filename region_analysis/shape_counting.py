@@ -31,7 +31,6 @@ class ShapeCounting:
             if value not in sorted_regions:
                 sorted_regions[value] = []
             sorted_regions[value].append(key)
-        print(len(sorted_regions))
         return sorted_regions
 
     def identify_shapes(self, region):
