@@ -18,17 +18,28 @@ class ShapeCounting:
         for y in range(image.shape[0]):
             for x in range(image.shape[1]):
                 if image[y, x] == 255:
-                    if image[y-1, x] == 255 and image[y, x-1] == 0:
-                        regions[(y, x)] = regions[(y-1, x)]
-                    elif image[y, x-1] == 255 and image[y-1, x] == 0:
-                        regions[(y, x)] = regions[(y, x-1)]
-                    elif image[y, x-1] == 255 and image[y, x] == 255:
-                        if regions[(y-1, x)] != regions[(y, x-1)]:
-                            regions[(y-1, x)] = regions[(y, x-1)]
-                        regions[(y, x)] = regions[(y, x-1)]
-                    else:
+                    if image[y, x-1] == 0 and image[y-1, x] == 0:
                         regions[(y, x)] = region_label
-                        region_label += 1
+                        region_label = region_label + 1
+                    if image[y, x-1] == 0 and image[y-1, x] == 255:
+                        regions[(y, x)] = regions[(y-1, x)]
+                    if image[y, x-1] == 255 and image[y-1, x] == 0:
+                        regions[(y, x)] = regions[(y, x-1)]
+                    if image[y, x-1] == 255 and image[y-1, x] == 255:
+                        regions[(y, x)] = regions[(y-1, x)]
+                        if regions[(y, x-1)] != regions[(y-1, x)]:
+                            regions[(y, x-1)] = regions[(y-1, x)]
+                    # if image[y-1, x] == 255 and image[y, x-1] == 0:
+                    #     regions[(y, x)] = regions[(y-1, x)]
+                    # elif image[y, x-1] == 255 and image[y-1, x] == 0:
+                    #     regions[(y, x)] = regions[(y, x-1)]
+                    # elif image[y, x-1] == 255 and image[y, x] == 255:
+                    #     if regions[(y-1, x)] != regions[(y, x-1)]:
+                    #         regions[(y-1, x)] = regions[(y, x-1)]
+                    #     regions[(y, x)] = regions[(y, x-1)]
+                    # else:
+                    #     regions[(y, x)] = region_label
+                    #     region_label += 1
         # Instead of making the dict key a coordinate, make the region number the key with the values being all coordinates
         sorted_regions = {}
         for key, value in regions.items():
