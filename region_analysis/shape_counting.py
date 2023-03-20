@@ -28,6 +28,7 @@ class ShapeCounting:
                     if image[y, x-1] == 255 and image[y-1, x] == 255:
                         regions[(y, x)] = regions[(y-1, x)]
                         if regions[(y, x-1)] != regions[(y-1, x)]:
+                            del regions[(y, x-1)]
                             regions[(y, x-1)] = regions[(y-1, x)]
                     # if image[y-1, x] == 255 and image[y, x-1] == 0:
                     #     regions[(y, x)] = regions[(y-1, x)]
