@@ -1,5 +1,6 @@
 import dip
 from dip import *
+import math
 
 
 class ShapeCounting:
@@ -30,17 +31,6 @@ class ShapeCounting:
                         if regions[(y, x-1)] != regions[(y-1, x)]:
                             del regions[(y, x-1)]
                             regions[(y, x-1)] = regions[(y-1, x)]
-                    # if image[y-1, x] == 255 and image[y, x-1] == 0:
-                    #     regions[(y, x)] = regions[(y-1, x)]
-                    # elif image[y, x-1] == 255 and image[y-1, x] == 0:
-                    #     regions[(y, x)] = regions[(y, x-1)]
-                    # elif image[y, x-1] == 255 and image[y, x] == 255:
-                    #     if regions[(y-1, x)] != regions[(y, x-1)]:
-                    #         regions[(y-1, x)] = regions[(y, x-1)]
-                    #     regions[(y, x)] = regions[(y, x-1)]
-                    # else:
-                    #     regions[(y, x)] = region_label
-                    #     region_label += 1
         # Instead of making the dict key a coordinate, make the region number the key with the values being all coordinates
         sorted_regions = {}
         for key, value in regions.items():
@@ -73,22 +63,36 @@ class ShapeCounting:
                 smallest_y = min(y_values)
                 biggest_x = max(x_values)
                 smallest_x = min(x_values)
+                valid_region = True
                 # Checking if length and width are around the same pixel length
                 if abs((biggest_x - smallest_x) - (biggest_y - smallest_y)) < 3:
                     shape = 'c'
                     for values in region[x]:
-                        if (biggest_y, biggest_x) == values:
+                        if (biggest_y, biggest_x) == values or (biggest_y, smallest_x) == values or (smallest_y, biggest_x) == values or (smallest_y, smallest_x) == values:
                             shape = 's'
                 else:
                     shape = 'e'
                     for values in region[x]:
-                        if (biggest_y, biggest_x) == values:
+                        if (biggest_y, biggest_x) == values or (biggest_y, smallest_x) == values or (smallest_y, biggest_x) == values or (smallest_y, smallest_x) == values:
                             shape = 'r'
                 centroid = ((biggest_y+smallest_y)/2, (biggest_x+smallest_x)/2)
                 shapes = {"Region": x,
                           "Centroid (in terms of (y,x))": centroid, "Area": pixel_count, "Shape": shape}
-                print(shapes.items())
-                final_dict[x] = shapes
+                # Removing regions with duplicate values
+                for z in final_dict.keys():
+                    dist_x = abs(centroid[1] - final_dict[z]
+                                 ["Centroid (in terms of (y,x))"][1])
+                    dist_y = abs(centroid[0] - final_dict[z]
+                                 ["Centroid (in terms of (y,x))"][0])
+                    if math.sqrt((dist_x**2)+(dist_y**2)) < 50:
+                        if pixel_count < final_dict[z]["Area"]:
+                            valid_region = False
+                        else:
+                            del final_dict[z]
+
+                if valid_region == True:
+                    print(shapes.items())
+                    final_dict[x] = shapes
 
         return final_dict
 
