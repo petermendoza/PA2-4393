@@ -54,7 +54,8 @@ class ShapeCounting:
 
         final_dict = dict()
         for x in region.keys():
-            if len(region[x]) > 10:
+            # 40 instead of 10 to avoid extraneous regions
+            if len(region[x]) > 40:
                 shapes = dict()
                 pixel_count = len(region[x])
                 y_values = [p[0] for p in region[x]]
@@ -89,6 +90,7 @@ class ShapeCounting:
                             valid_region = False
                         else:
                             del final_dict[z]
+                            break
 
                 if valid_region == True:
                     print(shapes.items())
@@ -131,5 +133,5 @@ class ShapeCounting:
             y_coord = round(shapes_data[x]["Centroid (in terms of (y,x))"][0])
             x_coord = round(shapes_data[x]["Centroid (in terms of (y,x))"][1])
             dip.putText(labeled_image, shapes_data[x]["Shape"], (
-                int(x_coord), int(y_coord)), dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, dip.LINE_AA)
+                int(x_coord), int(y_coord)), dip.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, dip.LINE_AA)
         return labeled_image

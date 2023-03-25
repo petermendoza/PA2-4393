@@ -15,11 +15,13 @@ class Rle:
         rle_code = []
         counter = 1
         rle_code.append(binary_image[0, 0])
+        # I noticed because of the anti aliasing from using LINE_AA in putText(), there are now gray values somehow which
+        # messed up my algorithm, so using different approach
         for y in range(binary_image.shape[0]):
             for x in range(binary_image.shape[1]):
                 # Check when current pixel is approaching end of image
                 if y != binary_image.shape[0]-1 and x == binary_image.shape[1]-1:
-                    if binary_image[y, x] == binary_image[y+1, 0]:
+                    if ((binary_image[y, x] > 128) and (binary_image[y+1, 0] > 128)) or ((binary_image[y, x] < 128) and (binary_image[y+1, 0] < 128)):
                         counter += 1
                     else:
                         rle_code.append(counter)
@@ -28,7 +30,7 @@ class Rle:
                 elif y == binary_image.shape[0]-1 and x == binary_image.shape[1]-1:
                     rle_code.append(counter)
                 else:
-                    if binary_image[y, x] == binary_image[y, x+1]:
+                    if ((binary_image[y, x] > 128) and (binary_image[y, x+1] > 128)) or ((binary_image[y, x] < 128) and (binary_image[y, x+1] < 128)):
                         counter += 1
                     else:
                         rle_code.append(counter)
