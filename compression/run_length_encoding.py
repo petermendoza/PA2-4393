@@ -51,8 +51,6 @@ class Rle:
         current_color = rle_code[0]
         for y in range(decoded_image.shape[0]):
             for x in range(decoded_image.shape[1]):
-                if x == 0:
-                    current_color = 0
                 if rle_code[current_index] != 0:
                     decoded_image[y, x] = current_color
                     rle_code[current_index] -= 1
